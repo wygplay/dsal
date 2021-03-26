@@ -30,4 +30,10 @@ public class ArrayStackTest {
         assertEquals(arrayStack.getTop(), "wyg");
         assertEquals(arrayStack.getSize(), 1);
     }
+
+    @Test
+    public void charTest() {
+        char a = '1';
+        System.out.println(a);
+    }
 }
