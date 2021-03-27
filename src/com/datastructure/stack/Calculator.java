@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @author wyg
  * @version 1.0
  * @date 2021/3/26 22:02
- * 计算器简单实现，非逆波兰法
+ * 计算器简单实现，非逆波兰法，个位数加减
  * 基础信息：运算符存在优先级，优先级高的先计算
  * 实现：
  * 将表达式读取到两个栈中，一个数栈，一个符号栈；
@@ -19,6 +19,9 @@ import java.util.Scanner;
  */
 public class Calculator {
     static ArrayIntStack numberStack = new ArrayIntStack(20);
+    /**
+     * 可以使用ArrayIntStack，char和int可以互转；
+     */
     static ArrayStack signStack = new ArrayStack(20);
     public static void main(String[] args) {
 
@@ -51,7 +54,8 @@ public class Calculator {
             if (" ".equals(s)) {
                 continue;
             }else if (isNumber(c)) {
-                int num = Integer.parseInt(s);
+                //使用
+                int num = c - 48;
                 numberStack.push(num);
             }else if (isSign(c)) {
                 if (signStack.isEmpty()) {
