@@ -33,7 +33,7 @@ public class ArrayStackTest {
 
     @Test
     public void charTest() {
-        char a = '1';
+        int a = '1' - 48;
         System.out.println(a);
     }
 }

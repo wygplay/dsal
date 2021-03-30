@@ -110,7 +110,7 @@ public class Calculator {
         int code = 0;
         if("+".equals(sign) || "-".equals(sign)) {
             code = 1;
-        } else if ("*".equals(sign)) {
+        } else if ("*".equals(sign) || "-".equals(sign)) {
             code = 2;
         } else if ("(".equals(sign) || ")".equals(sign)) {
             code = 3;
