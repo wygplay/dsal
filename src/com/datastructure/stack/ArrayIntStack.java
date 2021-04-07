@@ -9,15 +9,16 @@ import java.util.Arrays;
  * pop取出栈顶元素
  * top返回栈顶元素
  *
+ * @author WYG
  */
-public class ArrayStack {
+public class ArrayIntStack {
     private int maxSize;
-    private String[] arr;
+    private int[] arr;
     private int top = -1;
 
-    public ArrayStack(int maxSize) {
+    public ArrayIntStack(int maxSize) {
         this.maxSize = maxSize;
-        arr = new String[maxSize];
+        arr = new int[maxSize];
     }
 
     public boolean isFull(){
@@ -28,7 +29,7 @@ public class ArrayStack {
         return top == -1;
     }
 
-    public void push(String e) {
+    public void push(int e) {
         if (isFull()) {
             throw new RuntimeException("栈已满");
         }
@@ -36,22 +37,21 @@ public class ArrayStack {
         arr[top] = e;
     }
 
-    public String pop() {
+    public int pop() {
         if (isEmpty()) {
             throw new RuntimeException("空栈");
         }
-        String tmp = arr[top];
+        int tmp = arr[top];
         top--;
         return tmp;
     }
 
-    public String getTop() {
+    public int getTop() {
         if (isEmpty()) {
             throw new RuntimeException("空栈");
         }
         return arr[top];
     }
-
     public void show() {
         System.out.println(Arrays.toString(arr));
     }
