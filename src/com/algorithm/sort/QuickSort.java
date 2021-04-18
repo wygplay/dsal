@@ -6,4 +6,5 @@ package com.algorithm.sort;
  * @date 2021/4/17 14:58
  */
 public class QuickSort {
+
 }

@@ -13,27 +13,18 @@ import java.util.Date;
  * @date 2021/4/17 16:30
  */
 public class InsertSort {
-    public static void insertSort(int[] arr) {
+    public static void execSort(int[] arr) {
         //遍历无序数组
         for (int i = 1; i < arr.length; i++) {
             //遍历有序数组，将待排序数组前面的
-            for (int j = 0 ; j < i; j++) {
-                //注意此方法没有将比较与插入同时做，因此增加额外的时间复杂度,成为O(n^3)
-                if(arr[i] < arr[j]) {
+            for (int j = i - 1 ; j >= 0; j--) {
+                if(arr[j + 1] < arr[j]) {
                     //因为是数组，数组插入需要考虑将后续值后移
-                    insert(j, i, arr);
-                    break;
+                    int tmp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = tmp;
                 }
             }
-        }
-    }
-
-    public static void insert(int destIndex, int srcIndex, int[] arr) {
-        int srcValue = arr[srcIndex];
-        for(int i = destIndex; i < srcIndex + 1; i++) {
-            int tmp = arr[i];
-            arr[i] = srcValue;
-            srcValue = tmp;
         }
     }
 

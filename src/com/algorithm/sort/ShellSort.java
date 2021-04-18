@@ -27,4 +27,21 @@ public class ShellSort {
         }
     }
 
+    /**
+     * 使用交换的方法插入数据，而不是上面使用移位的方法
+     * @param arr
+     */
+    public void execSort(int[] arr) {
+        for (int gap = arr.length / 2; gap > 0; gap /= 2) {
+            for (int i = gap; i < arr.length; i += gap) {
+                for (int j = i -gap; j >= 0; j -= gap) {
+                    if (arr[j + gap] < arr[j]) {
+                       int tmp = arr[j];
+                       arr[j] = arr[j + gap];
+                       arr[j + gap] = tmp;
+                    }
+                }
+            }
+        }
+    }
 }

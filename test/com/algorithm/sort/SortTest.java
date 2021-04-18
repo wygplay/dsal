@@ -25,7 +25,7 @@ public class SortTest {
     public void init() {
         Random rand = new Random();
         for (int i = 0; i < maxSize; i++) {
-            arr[i] = maxSize - i;
+            arr[i] = rand.nextInt(maxSize *  10);
         }
         System.out.println(sdf.format(new Date()));
     }
@@ -45,8 +45,8 @@ public class SortTest {
     public void testInsertSort() {
         //80000数据结果 1-3s\2-1s\3-1s
         //80000数据最差结果
-        //InsertSort.insertSort(arr);
-        InsertSort.sort(arr);
+        InsertSort.execSort(arr);
+        //InsertSort.sort(arr);
     }
 
     @Test
