@@ -14,8 +14,6 @@ import java.util.Date;
 public class BubbleSort {
     private BubbleSort(){}
     public static void sort(int[] arr) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println(sdf.format(new Date()));
         //每层遍历目的选出一个最大值
         for (int i = 0; i < arr.length; i++) {
             boolean continueFlag = true;
@@ -32,6 +30,5 @@ public class BubbleSort {
                 break;
             }
         }
-        System.out.println(sdf.format(new Date()));
     }
 }
