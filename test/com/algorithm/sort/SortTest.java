@@ -18,7 +18,7 @@ import static junit.framework.TestCase.assertTrue;
  * @date 2021/4/15 23:04
  */
 public class SortTest {
-    public static final int maxSize = 800000;
+    public static final int maxSize = 10;
     int[] arr = new int[maxSize];
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Before
@@ -53,6 +53,12 @@ public class SortTest {
     public void testShellSort() {
         ShellSort.sort(arr);
     }
+
+    @Test
+    public void testQuicksort() {
+        QuickSort.sort(arr);
+    }
+
     @After
     public void print() {
         System.out.println(sdf.format(new Date()));
