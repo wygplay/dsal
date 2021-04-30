@@ -2,6 +2,7 @@ package com.algorithm.search;
 
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ import static org.junit.Assert.assertTrue;
  * @date 2021/4/28 21:31
  */
 public class SearchTest {
-    private final int MAX_SIZE = 100000;
+    private final int MAX_SIZE = 100;
     private int[] arr = new int[MAX_SIZE];
     @Before
     public void init() {
@@ -30,4 +31,10 @@ public class SearchTest {
         assertFalse(BinarySearch.search(arr, 0, arr.length - 1, MAX_SIZE));
     }
 
+    @Test
+    public void testFibSearch() {
+        int key = new Random().nextInt(MAX_SIZE - 1);
+        key = 99;
+        Assert.assertEquals(FibSearch.search(arr,  key), key);
+    }
 }
