@@ -50,6 +50,7 @@ public class ThreadedBinaryTree {
         ThreadedBinaryTreeNode node = root;
         boolean right = false;
         while (node != null) {
+            //可以while循环
             if(node.threadRightFlag == 0 && node.threadLeftFlag == 1) {
                 System.out.println(node);
                 break;
