@@ -55,7 +55,7 @@ public class SortTest {
     }
 
     @Test
-    public void testQuicksort() {
+    public void testQuickSort() {
         QuickSort.sort(arr);
     }
 
@@ -72,7 +72,7 @@ public class SortTest {
 
     @Test
     public void heapSort() {
-        HeapSort.sort(arr, maxSize);
+        HeapSort.sort(arr);
     }
 
     @After

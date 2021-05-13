@@ -30,7 +30,7 @@ public class HeapSortTest {
     }
     @Test
     public void heapSort() {
-        HeapSort.sort(arr, maxSize);
+        HeapSort.sort(arr);
     }
 
     @After
