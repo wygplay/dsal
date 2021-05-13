@@ -18,7 +18,7 @@ import static junit.framework.TestCase.assertTrue;
  * @date 2021/4/15 23:04
  */
 public class SortTest {
-    public static final int maxSize = 10;
+    public static final int maxSize = 8000000;
     int[] arr = new int[maxSize];
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Before
@@ -68,6 +68,11 @@ public class SortTest {
     @Test
     public void testRadixSort() {
         RadixSort.sort(arr);
+    }
+
+    @Test
+    public void heapSort() {
+        HeapSort.sort(arr, maxSize);
     }
 
     @After
