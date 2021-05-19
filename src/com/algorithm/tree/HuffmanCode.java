@@ -1,5 +1,6 @@
 package com.algorithm.tree;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -10,6 +11,7 @@ import java.util.*;
  * @date 2021/5/15 16:37
  */
 public class HuffmanCode {
+    static int complementLength = 0;
     //统计字符串中字符出现次数，并放到集合中
     private static List<HuffmanCodeNode> compute(byte[] bytes) {
         Map<Byte, Integer> map = new HashMap<>();
@@ -44,9 +46,8 @@ public class HuffmanCode {
         return list.get(0);
     }
 
-    public static Map<Byte, String> generateHuffmanCode(String str) {
+    public static Map<Byte, String> generateHuffmanCode(byte[] bytes) {
         Map<Byte, String> huffmanCodes = new HashMap<Byte, String>();
-        byte[] bytes = str.getBytes();
         List<HuffmanCodeNode> list = compute(bytes);
         HuffmanCodeNode huffmanTreeRoot = createHuffmanTreeCode(list);
         if (huffmanTreeRoot == null) {
@@ -78,8 +79,7 @@ public class HuffmanCode {
      * @param str
      * @param huffmanCodes
      */
-    public static byte[] encode(String str, Map<Byte, String> huffmanCodes) {
-        byte[] bytes = str.getBytes();
+    public static byte[] encode(byte[] bytes, Map<Byte, String> huffmanCodes) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             sb.append(huffmanCodes.get(bytes[i]));
@@ -92,24 +92,25 @@ public class HuffmanCode {
             if (index + 8 < huffmanCode.length()) {
                 huffmanCodeBytes[i] = (byte)Integer.parseInt(huffmanCode.substring(index, index + 8), 2);
             } else {
-                huffmanCodeBytes[i] = (byte)Integer.parseInt(huffmanCode.substring(index), 2);
+                String endCode = huffmanCode.substring(index);
+                if (endCode.startsWith("0")) {
+                    complementLength = endCode.length();
+                }
+                huffmanCodeBytes[i] = (byte)Integer.parseInt(endCode, 2);
+
                 System.out.println("last: " + huffmanCode.substring(index));
             }
             index += 8;
         }
-        System.out.println(huffmanCode);
-        System.out.println(Arrays.toString(huffmanCodeBytes));
-        System.out.println(str.length());
-        System.out.println(huffmanCodeBytes.length);
         return huffmanCodeBytes;
     }
 
-    public static void decode(byte[] huffmanCodeBytes, Map<Byte, String> huffmanCodes) {
+    public static byte[] decode(byte[] huffmanCodeBytes, Map<Byte, String> huffmanCodes) {
         // 字节转为哈夫曼编码
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < huffmanCodeBytes.length; i++) {
-            boolean isComplement = i != huffmanCodeBytes.length - 1;
-            sb.append(byteToBitString(isComplement, huffmanCodeBytes[i]));
+            boolean isEnd = i == huffmanCodeBytes.length - 1;
+            sb.append(byteToBitString(isEnd, huffmanCodeBytes[i]));
         }
         String huffmanCodeStr = sb.toString();
         // 哈夫曼key value反转
@@ -124,7 +125,11 @@ public class HuffmanCode {
             Byte decodedByte = null;
             while (decodedByte == null) {
                 count++;
-                decodedByte = map.get(huffmanCodeStr.substring(i, i + count));
+                if(i + count < huffmanCodeStr.length()) {
+                    decodedByte = map.get(huffmanCodeStr.substring(i, i + count));
+                } else {
+                    decodedByte = map.get(huffmanCodeStr.substring(i));
+                }
             }
             list.add(decodedByte);
             i += count;
@@ -133,18 +138,84 @@ public class HuffmanCode {
         for (int i = 0; i < list.size(); i++) {
             bytes[i] = list.get(i);
         }
-        System.out.println(new String(bytes));
+        return bytes;
     }
 
-    public static String byteToBitString(boolean isComplement,int  b) {
+    /**
+     * 哈夫曼编码压缩文件
+     * @param srcFile
+     * @param dstFile
+     */
+    public static void encode(File srcFile, File dstFile) {
+        FileInputStream fileInputStream = null;
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            fileInputStream = new FileInputStream(srcFile);
+            byte[] bytes = new byte[fileInputStream.available()];
+            fileInputStream.read(bytes);
+            Map<Byte, String> huffmanCodes = generateHuffmanCode(bytes);
+            byte[] huffmanByteCodes = encode(bytes, huffmanCodes);
+            objectOutputStream = new ObjectOutputStream(new FileOutputStream(dstFile));
+            objectOutputStream.writeObject(huffmanByteCodes);
+            objectOutputStream.writeObject(huffmanCodes);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                fileInputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                objectOutputStream.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * 文件解压操作
+     * @param zipFile
+     */
+    public static void decode(File zipFile, File decodedFile) {
+        FileOutputStream fos = null;
+        ObjectInputStream objs = null;
+        try{
+            fos = new FileOutputStream(decodedFile);
+            objs = new ObjectInputStream(new FileInputStream(zipFile));
+            byte[] huffmanBytes = (byte[]) objs.readObject();
+            Map<Byte, String> huffmanCodes = (Map<Byte, String>) objs.readObject();
+            byte[] bytes = decode(huffmanBytes, huffmanCodes);
+            fos.write(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+            try {
+                objs.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public static String byteToBitString(boolean isEnd,int  b) {
         //考虑是否补码，正数需要补码，最后一个字节不确定是否补码，负数无所谓，补码与否对结果无影响
         //补码截取低八位
-        if(isComplement) {
+        if(!isEnd || complementLength != 0) {
             b |= 256;
         }
         String binaryStr = Integer.toBinaryString(b);
-        if(isComplement) {
+        if(!isEnd) {
             binaryStr = binaryStr.substring(binaryStr.length() - 8);
+        } else if (isEnd && complementLength != 0){
+            binaryStr = binaryStr.substring(binaryStr.length() - complementLength);
         }
         return binaryStr;
     }
