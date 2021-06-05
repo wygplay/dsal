@@ -98,9 +98,12 @@ public class GraphTest {
         Dijkstra dijkstra = new Dijkstra(singleGraph);
         assertEquals(35, dijkstra.findShortestPath("Sheet music", "Piano"));
         dijkstra.showPath("Piano");
+        dijkstra.showShortestPath();
         assertEquals(20, dijkstra.findShortestPath("Sheet music", "Guitar"));
         dijkstra.showPath("Guitar");
+        dijkstra.showShortestPath();
         assertEquals(20, dijkstra.findShortestPath("Guitar", "Piano"));
         dijkstra.showPath("Piano");
+        dijkstra.showShortestPath();
     }
 }

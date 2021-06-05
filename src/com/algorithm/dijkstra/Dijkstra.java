@@ -38,29 +38,31 @@ public class Dijkstra {
 
     /**
      * 解决数组实现的图中最小路径问题
-     * @param start
-     * @param end
-     * @return
+     * @param start 起始位置
+     * @param end 终点
+     * @return 返回两点之间最小路径值
      */
     public int findShortestPath(String start, String end) {
+        //初始化，仅仅是为了测试时可以使用同一个对象多次查找
         this.parents = new HashMap<>();
+        this.processed = new HashMap<>();
         for (String vertex : graph.getVertexList()) {
             if (vertex.equals(start)) {
                 shortestPath.put(vertex, 0);
                 continue;
             }
-            processed.put(vertex, false);
             shortestPath.put(vertex, Integer.MAX_VALUE);
         }
         String vertex = start;
-        //注意会一直取大终止结点
-        while (vertex != null && vertex.length() > 0) {
+        //注意会一直取到类路径可以达到的尾端（无邻接结点），判断vertex==end时，提前终止
+        while (vertex != null && vertex.length() > 0 && !vertex.equals(end)) {
             int index = graph.getVertexIndex(vertex);
             //找打vertex的邻接结点
             if (index == -1) {
-                throw new IllegalArgumentException("边不存在: " + vertex);
+                throw new IllegalArgumentException("顶点不存在: " + vertex);
             }
             int neighbor = graph.getNeighbor(index);
+            //一个一个处理当前结点的邻接结点
             while (neighbor != -1) {
                 int weight = graph.getNeighborWeight(index, neighbor);
                 int newPathValue = shortestPath.get(vertex) + weight;
@@ -72,7 +74,9 @@ public class Dijkstra {
                 }
                 neighbor = graph.getNextNeighbor(index, neighbor);
             }
+            //将当前结点标记为已处理，不再重复处理
             processed.put(vertex, true);
+            //找到候补节点中最小值
             vertex = findUnprocessedShortestNode();
         }
         return shortestPath.get(end);
@@ -82,7 +86,7 @@ public class Dijkstra {
         int shortestValue = Integer.MAX_VALUE;
         String vertex = null;
         for (Map.Entry<String, Integer> entry : shortestPath.entrySet()) {
-            if (entry.getValue() < shortestValue && !processed.get(entry.getKey())) {
+            if (entry.getValue() < shortestValue && !Boolean.TRUE.equals(processed.get(entry.getKey()))) {
                 shortestValue = entry.getValue();
                 vertex = entry.getKey();
             }
@@ -95,6 +99,12 @@ public class Dijkstra {
             System.out.print(end + "-->");
             end = parents.get(end);
         } while (end != null);
-        System.out.println("-----" + end + "-----");
+        System.out.println("----------");
+    }
+
+    public void showShortestPath() {
+        for (Map.Entry<String, Integer> entry : shortestPath.entrySet()) {
+            System.out.println(entry.getKey() + "->" + entry.getValue());
+        }
     }
 }
