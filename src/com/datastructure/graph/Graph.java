@@ -41,6 +41,10 @@ public class Graph {
         return this.vertexList;
     }
 
+    public int[][] getEdges() {
+        return edges;
+    }
+
     /**
      * 插入边，无向图
      * @param vertexA 顶点a的坐标
