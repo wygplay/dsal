@@ -35,4 +35,11 @@ public class LeetCode42Test {
         assertEquals(expected6, lc.trap(height6));
     }
 
+    @Test
+    public void test() {
+        int[] height = {1, 0, 3, 1, 2, 0, 1};
+        int[] maxRight = new int[height.length];
+        for (int i = 0; i < height.length - 2; i++) {
+        }
+    }
 }
